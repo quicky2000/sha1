@@ -21,67 +21,82 @@
 #include <iostream>
 #include <string>
 #include <array>
+#include <quicky_test.h>
+#include <ansi_colors.h>
+
 using namespace std;
 
-void check_hash( const std::string & p_string
+bool check_hash( const std::string & p_string
                , const std::array<uint32_t, 5> & p_reference_key
                )
 {
+    bool l_ok = true;
+    std::cout << R"(Check hash of ")" << p_string << R"(")" << std::endl;
     sha1 l_sha1(p_string.c_str(),8 * p_string.size());
     unsigned int l_key_index = 0;
     for(auto l_iter: p_reference_key)
     {
-        assert(l_iter == l_sha1.get_key(l_key_index++));
+        l_ok &= quicky_utils::quicky_test::check_expected(l_iter, l_sha1.get_key(l_key_index), "Check key[" + std::to_string(l_key_index) +"]");
+        ++l_key_index;
     }
+    return l_ok;
 }
 
 int main()
 {
-    check_hash("Hello world"
-              , {0x7b502c3a
-                , 0x1f48c860
-                , 0x9ae212cd
-                , 0xfb639dee
-                , 0x39673f5e
-                }
-              );
 
-    check_hash( "a"
-              , { 0x86f7e437
-                , 0xfaa5a7fc
-                , 0xe15d1ddc
-                , 0xb9eaeaea
-                , 0x377667b8
-                }
-              );
+    bool l_ok = true;
 
-    check_hash("abc"
-              , { 0xa9993e36
-                , 0x4706816a
-                , 0xba3e2571
-                , 0x7850c26c
-                , 0x9cd0d89d
-                }
-              );
+    l_ok &= check_hash("Hello world"
+                      , {0x7b502c3a
+                        , 0x1f48c860
+                        , 0x9ae212cd
+                        , 0xfb639dee
+                        , 0x39673f5e
+                        }
+                      );
 
-    check_hash( "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"
-              , {0x84983e44
-                 , 0x1c3bd26e
-                 , 0xbaae4aa1
-                 , 0xf95129e5
-                 , 0xe54670f1
-                 }
-              );
+    l_ok &= check_hash( "a"
+                      , { 0x86f7e437
+                        , 0xfaa5a7fc
+                        , 0xe15d1ddc
+                        , 0xb9eaeaea
+                        , 0x377667b8
+                        }
+                      );
 
-    check_hash( "0123456701234567012345670123456701234567012345670123456701234567"
-              , { 0xe0c094e8
-                , 0x67ef46c3
-                , 0x50ef54a7
-                , 0xf59dd60b
-                , 0xed92ae83
-                }
-              );
+    l_ok &= check_hash("abc"
+                      , { 0xa9993e36
+                        , 0x4706816a
+                        , 0xba3e2571
+                        , 0x7850c26c
+                        , 0x9cd0d89d
+                        }
+                      );
 
+    l_ok &= check_hash( "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"
+                      , {0x84983e44
+                        , 0x1c3bd26e
+                        , 0xbaae4aa1
+                        , 0xf95129e5
+                        , 0xe54670f1
+                        }
+                      );
+
+    l_ok &= check_hash( "0123456701234567012345670123456701234567012345670123456701234567"
+                      , { 0xe0c094e8
+                        , 0x67ef46c3
+                        , 0x50ef54a7
+                        , 0xf59dd60b
+                        , 0xed92ae83
+                        }
+                      );
+
+    std::cout << quicky_utils::set_fcolor(l_ok ? quicky_utils::ansi_color::green : quicky_utils::ansi_color::red);
+    std::cout << "--------------------------------------------" << std::endl;
+    std::cout << "- TEST " << (l_ok ? "PASSED" : "FAILED") << std::endl;
+    std::cout << "--------------------------------------------" << std::endl;
+    return !l_ok;
 }
 #endif // SHA1_SELF_TEST
 // EOF

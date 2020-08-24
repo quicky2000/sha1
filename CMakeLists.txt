@@ -16,7 +16,7 @@ set(MY_INCLUDE_DIRECTORIES
 
 #Create dependancy list
 set(DEPENDANCY_LIST "")
-#LIST(APPEND DEPENDANCY_LIST "EXT_xmlParser")
+LIST(APPEND DEPENDANCY_LIST "quicky_utils")
 
 #------------------------------
 #- Generic part
