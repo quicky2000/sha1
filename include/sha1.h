@@ -23,12 +23,14 @@
 #include <iostream>
 #include <iomanip>
 #include <string.h>
+#include <cassert>
 
 class sha1
 {
  public:
   inline sha1(const char *p_data,uint64_t p_size);
-  
+    inline uint32_t get_key(unsigned int p_index) const;
+
  private:
   inline static const uint32_t get_constant(const uint32_t p_index);
   inline static const uint32_t f(const uint32_t & x,const uint32_t & y,const uint32_t & z,const uint32_t i);
@@ -285,4 +287,13 @@ const uint32_t sha1::rotl(const uint32_t & x,const uint32_t n)
 {
   return ( x << n) | ( x >> ( 32 - n) );
 }
+
+//------------------------------------------------------------------------------
+uint32_t
+sha1::get_key(unsigned int p_index) const
+{
+    assert(p_index < 5);
+    return m_key[p_index];
+}
+
 #endif
