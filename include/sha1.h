@@ -18,11 +18,11 @@
 #ifndef SHA1_H
 #define SHA1_H
 
-#include <stdint.h>
+#include <cstdint>
 
 #include <iostream>
 #include <iomanip>
-#include <string.h>
+#include <cstring>
 #include <cassert>
 
 class sha1
@@ -68,10 +68,10 @@ class sha1
 
     inline static
     uint32_t rotl( uint32_t x
-                 , uint32_t i
+                 , uint32_t n
                  );
 
-    inline
+    inline static
     void display_block(const uint32_t (&p_block)[16]);
 
     inline
@@ -256,9 +256,9 @@ sha1::sha1( const char * p_data
 void sha1::display_key() const
 {
     std::cout << "0x" << std::hex ;
-    for(uint32_t l_key_index = 0 ; l_key_index < 5 ; ++l_key_index)
+    for(auto l_iter: m_key)
     {
-        std::cout << m_key[l_key_index] << " ";
+        std::cout << l_iter << " ";
     }
     std::cout << std::dec;
 }
