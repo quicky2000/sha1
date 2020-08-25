@@ -51,48 +51,48 @@ int main()
     bool l_ok = true;
 
     l_ok &= check_hash("Hello world"
-                      , {0x7b502c3a
-                        , 0x1f48c860
-                        , 0x9ae212cd
-                        , 0xfb639dee
-                        , 0x39673f5e
-                        }
+                      , {{0x7b502c3a
+                         , 0x1f48c860
+                         , 0x9ae212cd
+                         , 0xfb639dee
+                         , 0x39673f5e
+                        }}
                       );
 
     l_ok &= check_hash( "a"
-                      , { 0x86f7e437
-                        , 0xfaa5a7fc
-                        , 0xe15d1ddc
-                        , 0xb9eaeaea
-                        , 0x377667b8
-                        }
+                      , {{ 0x86f7e437
+                         , 0xfaa5a7fc
+                         , 0xe15d1ddc
+                         , 0xb9eaeaea
+                         , 0x377667b8
+                        }}
                       );
 
     l_ok &= check_hash("abc"
-                      , { 0xa9993e36
-                        , 0x4706816a
-                        , 0xba3e2571
-                        , 0x7850c26c
-                        , 0x9cd0d89d
-                        }
+                      , {{ 0xa9993e36
+                         , 0x4706816a
+                         , 0xba3e2571
+                         , 0x7850c26c
+                         , 0x9cd0d89d
+                        }}
                       );
 
     l_ok &= check_hash( "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"
-                      , {0x84983e44
-                        , 0x1c3bd26e
-                        , 0xbaae4aa1
-                        , 0xf95129e5
-                        , 0xe54670f1
-                        }
+                      , {{0x84983e44
+                         , 0x1c3bd26e
+                         , 0xbaae4aa1
+                         , 0xf95129e5
+                         , 0xe54670f1
+                        }}
                       );
 
     l_ok &= check_hash( "0123456701234567012345670123456701234567012345670123456701234567"
-                      , { 0xe0c094e8
-                        , 0x67ef46c3
-                        , 0x50ef54a7
-                        , 0xf59dd60b
-                        , 0xed92ae83
-                        }
+                      , {{ 0xe0c094e8
+                         , 0x67ef46c3
+                         , 0x50ef54a7
+                         , 0xf59dd60b
+                         , 0xed92ae83
+                        }}
                       );
 
     std::cout << quicky_utils::set_fcolor(l_ok ? quicky_utils::ansi_color::green : quicky_utils::ansi_color::red);

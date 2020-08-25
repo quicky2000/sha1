@@ -24,6 +24,7 @@
 #include <iomanip>
 #include <cstring>
 #include <cassert>
+#include <array>
 
 class sha1
 {
@@ -77,37 +78,37 @@ class sha1
                  );
 
     inline static
-    void display_block(const uint32_t (&p_block)[16]);
+    void display_block(const std::array<uint32_t, 16> &p_block);
 
     inline
     void display_key()const;
 
-    uint32_t m_key[5];
-    uint32_t m_words[80];
-    static const uint32_t m_constants[4];
+    std::array<uint32_t,5> m_key;
+    std::array<uint32_t, 80> m_words;
+    static const std::array<uint32_t,4> m_constants;
 };
 
 //------------------------------------------------------------------------------
 sha1::sha1( const uint8_t * p_data
           , uint64_t p_size_bit
           )
-          : m_key{ 0x67452301
-                  , 0xefcdab89
-                  , 0x98badcfe
-                  , 0x10325476
-                  , 0xc3d2e1f0
-                  }
-          , m_words{ 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-                   , 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-                   , 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-                   , 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-                   , 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-                   , 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-                   , 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-                   , 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-                   , 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-                   , 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-                   }
+          : m_key{{0x67452301
+                  ,0xefcdab89
+                  ,0x98badcfe
+                  ,0x10325476
+                  ,0xc3d2e1f0
+                 }}
+          , m_words{{ 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
+                    , 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
+                    , 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
+                    , 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
+                    , 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
+                    , 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
+                    , 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
+                    , 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
+                    , 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
+                    , 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
+                   }}
 
 {
 #ifdef VERBOSE_SHA1
@@ -130,7 +131,7 @@ sha1::sha1( const uint8_t * p_data
     for(uint64_t l_block_index = 0; l_block_index < l_nb_blocks ; ++l_block_index)
     {
         //Working block
-        uint32_t l_working_block[16]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+        std::array<uint32_t,16> l_working_block={{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
 
         // Init block with datas
         //--------------------------
@@ -234,10 +235,10 @@ sha1::sha1( const uint8_t * p_data
         // Initialising word array
         //----------------------------
         // The 16 first words are the data themself
-        memcpy(m_words,l_working_block,64);
+        memcpy(m_words.data(),l_working_block.data(),16 * sizeof(uint32_t));
 
         // Computing the other words
-        for(uint32_t l_word_index = 16;l_word_index < 80; ++l_word_index)
+        for(uint32_t l_word_index = 16;l_word_index < m_words.size(); ++l_word_index)
         {
 #ifdef VERBOSE_SHA1
             std::cout << "Computing Word[" << l_word_index << "]" << std::endl ;
@@ -247,7 +248,7 @@ sha1::sha1( const uint8_t * p_data
 
 #ifdef VERBOSE_SHA1
         //display words
-        for(uint32_t l_word_index = 0;l_word_index < 80; ++l_word_index)
+        for(uint32_t l_word_index = 0;l_word_index < m_words.size(); ++l_word_index)
         {
             std::cout << "Word["<< l_word_index <<"] = 0x" << std::hex << m_words[l_word_index] << std::dec << std::endl ;
         }
@@ -264,7 +265,7 @@ sha1::sha1( const uint8_t * p_data
 
         // Performing the "round"
         //-------------------------
-        for(uint32_t l_round_index = 0; l_round_index < 80 ; ++l_round_index)
+        for(uint32_t l_round_index = 0; l_round_index < m_words.size() ; ++l_round_index)
         {
 #ifdef VERBOSE_SHA1
             std::cout << "Performing round " << l_round_index << std::endl ;
@@ -311,11 +312,11 @@ void sha1::display_key() const
 }
 
 //------------------------------------------------------------------------------
-void sha1::display_block(const uint32_t (&p_block)[16])
+void sha1::display_block(const std::array<uint32_t, 16> &p_block)
 {
     std:: cout << "------------------------" << std::endl ;
     // Display block
-    for(uint32_t l_word_index = 0 ; l_word_index < 16; ++l_word_index)
+    for(uint32_t l_word_index = 0 ; l_word_index < p_block.size(); ++l_word_index)
     {
         std::cout << "Word[" << l_word_index << "] = 0x" << std::hex << p_block[l_word_index] << std::dec << std::endl ;
     }
@@ -390,7 +391,7 @@ uint32_t sha1::rotl( uint32_t x
 uint32_t
 sha1::get_key(unsigned int p_index) const
 {
-    assert(p_index < 5);
+    assert(p_index < m_key.size());
     return m_key[p_index];
 }
 
