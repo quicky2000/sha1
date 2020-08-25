@@ -39,37 +39,37 @@ class sha1
   private:
 
     inline static
-    const uint32_t get_constant(const uint32_t p_index);
+    uint32_t get_constant(uint32_t p_index);
 
     inline static
-    const uint32_t f( const uint32_t & x
-                    , const uint32_t & y
-                    , const uint32_t & z
-                    , const uint32_t i
-                    );
+    uint32_t f( uint32_t x
+              , uint32_t y
+              , uint32_t z
+              , uint32_t i
+              );
 
     inline static
-    const uint32_t ch( const uint32_t & x
-                     , const uint32_t & y
-                     , const uint32_t & z
-                     );
+    uint32_t ch( uint32_t x
+               , uint32_t y
+               , uint32_t z
+               );
 
     inline static
-    const uint32_t parity( const uint32_t & x
-                         , const uint32_t & y
-                         , const uint32_t & z
-                         );
+    uint32_t parity( uint32_t x
+                   , uint32_t y
+                   , uint32_t z
+                   );
 
     inline static
-    const uint32_t maj( const uint32_t & x
-                      , const uint32_t & y
-                      , const uint32_t & z
-                      );
+    uint32_t maj( uint32_t x
+                , uint32_t y
+                , uint32_t z
+                );
 
     inline static
-    const uint32_t rotl( const uint32_t & x
-                       , const uint32_t i
-                       );
+    uint32_t rotl( uint32_t x
+                 , uint32_t i
+                 );
 
     inline
     void display_block(const uint32_t (&p_block)[16]);
@@ -264,17 +264,17 @@ void sha1::display_block(const uint32_t (&p_block)[16])
 }
 
 //------------------------------------------------------------------------------
-const uint32_t sha1::get_constant(const uint32_t p_index)
+uint32_t sha1::get_constant(uint32_t p_index)
 {
     return m_constants[p_index / 20];
 }
 
 //------------------------------------------------------------------------------
-const uint32_t sha1::f( const uint32_t & x
-                      , const uint32_t & y
-                      , const uint32_t & z
-                      , const uint32_t i
-                      )
+uint32_t sha1::f( uint32_t x
+                , uint32_t y
+                , uint32_t z
+                , uint32_t i
+                )
 {
     uint32_t l_result;
     switch(i / 20)
@@ -294,36 +294,36 @@ const uint32_t sha1::f( const uint32_t & x
 }
 
 //------------------------------------------------------------------------------
-const uint32_t sha1::ch( const uint32_t & x
-                       , const uint32_t & y
-                       , const uint32_t & z
-                       )
+uint32_t sha1::ch( uint32_t x
+                 , uint32_t y
+                 , uint32_t z
+                 )
 {
     return (x & y ) ^ ( (~x) & z );
 }
 
 //------------------------------------------------------------------------------
-const uint32_t sha1::parity( const uint32_t & x
-                           , const uint32_t & y
-                           , const uint32_t & z
-                           )
+uint32_t sha1::parity( uint32_t x
+                     , uint32_t y
+                     , uint32_t z
+                     )
 {
     return x ^ y ^ z;
 }
 
 //------------------------------------------------------------------------------
-const uint32_t sha1::maj( const uint32_t & x
-                        , const uint32_t & y
-                        , const uint32_t & z
-                        )
+uint32_t sha1::maj( uint32_t x
+                  , uint32_t y
+                  , uint32_t z
+                  )
 {
     return (x & y ) ^ ( x & z ) ^ ( y & z );
 }
 
 //------------------------------------------------------------------------------
-const uint32_t sha1::rotl( const uint32_t & x
-                         , const uint32_t n
-                         )
+uint32_t sha1::rotl( uint32_t x
+                   , uint32_t n
+                   )
 {
     return ( x << n) | ( x >> ( 32 - n) );
 }
