@@ -27,6 +27,11 @@
 
 class sha1
 {
+    inline friend
+    std::ostream & operator<<( std::ostream & p_stream
+                             , const sha1 & p_sha1
+                             );
+
   public:
     inline
     sha1( const uint8_t * p_data
@@ -387,6 +392,19 @@ sha1::get_key(unsigned int p_index) const
 {
     assert(p_index < 5);
     return m_key[p_index];
+}
+
+//------------------------------------------------------------------------------
+std::ostream &
+operator<<(std::ostream & p_stream, const sha1 & p_sha1)
+{
+    p_stream << "0x" << std::hex ;
+    for(auto l_iter: p_sha1.m_key)
+    {
+        p_stream << l_iter << " ";
+    }
+    p_stream << std::dec;
+    return p_stream;
 }
 
 #endif // SHA1_H
