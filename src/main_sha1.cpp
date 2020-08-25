@@ -33,12 +33,14 @@ bool check_hash( const std::string & p_string
     bool l_ok = true;
     std::cout << R"(Check hash of ")" << p_string << R"(")" << std::endl;
     sha1 l_sha1((const uint8_t *)p_string.c_str(),8 * p_string.size());
+
     unsigned int l_key_index = 0;
     for(auto l_iter: p_reference_key)
     {
         l_ok &= quicky_utils::quicky_test::check_expected(l_iter, l_sha1.get_key(l_key_index), "Check key[" + std::to_string(l_key_index) +"]");
         ++l_key_index;
     }
+    std::cout << std::endl;
     return l_ok;
 }
 
