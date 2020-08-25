@@ -29,7 +29,7 @@ class sha1
 {
   public:
     inline
-    sha1( const char * p_data
+    sha1( const uint8_t * p_data
         , uint64_t p_size
         );
 
@@ -83,7 +83,7 @@ class sha1
 };
 
 //------------------------------------------------------------------------------
-sha1::sha1( const char * p_data
+sha1::sha1( const uint8_t * p_data
           , uint64_t p_size_bit
           )
           : m_key{ 0x67452301
@@ -132,7 +132,7 @@ sha1::sha1( const char * p_data
             std::cout <<  "Copy complete block" << std::endl ;
             for(uint32_t l_byte_index = 0; l_byte_index < 64; ++l_byte_index)
             {
-                l_working_block[l_byte_index / 4] |= p_data[l_byte_index] << (24 - 8 * (l_byte_index % 4 ));
+                l_working_block[l_byte_index / 4] |= ((uint32_t)p_data[l_byte_index]) << (24 - 8 * (l_byte_index % 4 ));
             }
         }
         else
@@ -149,7 +149,7 @@ sha1::sha1( const char * p_data
                 //	  display_block(l_working_block);
                 for(uint32_t l_byte_index = 0; l_byte_index < l_rest_size_bits / 8; ++l_byte_index)
                 {
-                    l_working_block[l_byte_index / 4] |= p_data[l_byte_index] << (24 - 8 * (l_byte_index % 4 ));
+                    l_working_block[l_byte_index / 4] |= ((uint32_t)p_data[l_byte_index]) << (24 - 8 * (l_byte_index % 4 ));
                 }
                 display_block(l_working_block);
             }
@@ -164,8 +164,8 @@ sha1::sha1( const char * p_data
                 // Setting one additional bit to 1
                 std::cout << "Index of block where to set the additional bit to 1 = " << (l_rest_size_bits / 32) << std::endl ;
                 std::cout << "Shifting of " << (31 - l_rest_size_bits) << std::endl ;
-                std::cout << "Mask = 0x" << std::hex <<  ( 1 << (31 - l_rest_size_bits)) << std::dec<< std::endl ;
-                l_working_block[(l_rest_size_bits) / 32] |=  1 << (31 - l_rest_size_bits);
+                std::cout << "Mask = 0x" << std::hex <<  ( 1u << (31 - l_rest_size_bits)) << std::dec<< std::endl ;
+                l_working_block[(l_rest_size_bits) / 32] |=  1u << (31 - l_rest_size_bits);
 	      
                 //	  display_block(l_working_block);
 	      
@@ -177,7 +177,7 @@ sha1::sha1( const char * p_data
             if(l_block_index + 1 == l_nb_blocks)
             {
                 std::cout << "Adding the size" << std::endl ;
-                l_working_block[14] = p_size_bit >> 32;
+                l_working_block[14] = p_size_bit >> 32u;
                 l_working_block[15] = (uint32_t)(p_size_bit & 0xFFFFFFFF);
                 l_reset_word_end_index = 14;
             }
