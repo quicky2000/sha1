@@ -3,7 +3,7 @@ Sha1
 
 Code to compute SHA1 hash 
 
-Continuous integration with [Travis-Ci](https://travis-ci.org/quicky2000/sha1) : ![Build Status](https://travis-ci.org/quicky2000/sha1.svg?branch=master)
+Continuous integration with [Travis-Ci](https://app.travis-ci.com/github/quicky2000/sha1) : ![Build Status](https://travis-ci.org/quicky2000/sha1.svg?branch=master)
 
 License
 -------
