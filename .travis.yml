@@ -4,7 +4,6 @@ matrix:
       sudo: required
       dist: bionic
       compiler: gcc
-    - os: osx
 
 language: cpp
 
@@ -26,10 +25,11 @@ before_install:
   - chmod a+x repositories/quicky_tools/bin/*
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mkdir build; cd build; generate_makefile sha1 ; make test; fi
+  - mkdir build; cd build; generate_makefile sha1
+  - make test
   - cd $MY_LOCATION ; mkdir cmake_build ; cd cmake_build ; cmake $QUICKY_REPOSITORY/sha1
   - make
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd $MY_LOCATION/build ; ./bin/sha1.exe ; fi
+  - cd $MY_LOCATION/build ; ./bin/sha1.exe
   - cd $MY_LOCATION/cmake_build
   - ./sha1
 #EOF
